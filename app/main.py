@@ -1,9 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 import logging
 import uvicorn
 from contextlib import asynccontextmanager
+import os
+from pathlib import Path
 
 from app.config import settings
 from app.models.database import db_manager
@@ -59,6 +62,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Create static directory if it doesn't exist
+static_dir = Path("app/static")
+static_dir.mkdir(exist_ok=True)
+
+# Mount static files directory
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
 # Include routers
 app.include_router(documents.router)
 app.include_router(query.router)
@@ -81,15 +91,22 @@ async def health_check():
         logger.error(f"Health check failed: {e}")
         raise HTTPException(status_code=503, detail="Service unavailable")
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    """Root endpoint"""
-    return {
-        "message": "RAG Service API",
-        "version": settings.api_version,
-        "docs_url": "/docs",
-        "health_url": "/health"
-    }
+    """Serve the home page"""
+    html_file = Path("app/static/index.html")
+    
+    if html_file.exists():
+        return FileResponse(html_file)
+    else:
+        # Fallback JSON response if HTML file doesn't exist
+        return JSONResponse({
+            "message": "RAG Service API",
+            "version": settings.api_version,
+            "docs_url": "/docs",
+            "health_url": "/health",
+            "note": "Create app/static/index.html for the web interface"
+        })
 
 # Global exception handler
 @app.exception_handler(Exception)

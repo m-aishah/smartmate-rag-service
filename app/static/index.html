@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartMate RAG Service</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: #f9f9f9;
+        color: #333;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 3rem;
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .logo {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        color: #7a7a7a;
+        margin-bottom: 1rem;
+        font-weight: 400;
+      }
+
+      .description {
+        font-size: 1rem;
+        color: #7a7a7a;
+        max-width: 600px;
+        margin: 0 auto 1.5rem;
+        font-weight: 400;
+      }
+
+      .github-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .github-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #24292e;
+        color: white;
+        text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+
+      .github-link:hover {
+        background: #0366d6;
+        transform: translateY(-1px);
+      }
+
+      .star-text {
+        color: #7a7a7a;
+        font-size: 0.9rem;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .card {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .card h2 {
+        color: #2d3748;
+        margin-bottom: 1rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+      }
+
+      .feature-list {
+        list-style: none;
+      }
+
+      .feature-list li {
+        padding: 0.6rem 0;
+        color: #555;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      .feature-list li::before {
+        content: "✓";
+        color: #ff6b35;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .api-routes {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      .api-routes h2 {
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .routes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .route-category {
+        background: #fafafa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        border-left: 4px solid #ff6b35;
+      }
+
+      .route-category h3 {
+        color: #2d3748;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .route {
+        margin-bottom: 0.75rem;
+        padding: 0.6rem;
+        background: white;
+        border-radius: 6px;
+        font-family: "Monaco", "Menlo", "Consolas", monospace;
+        font-size: 0.9rem;
+        border: 1px solid #e5e5e5;
+      }
+
+      .method {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        margin-right: 0.5rem;
+      }
+
+      .method.get {
+        background: #28a745;
+        color: white;
+      }
+      .method.post {
+        background: #007bff;
+        color: white;
+      }
+      .method.delete {
+        background: #dc3545;
+        color: white;
+      }
+
+      .cta-section {
+        text-align: center;
+        background: white;
+        padding: 2.5rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .cta-section h2 {
+        color: #2d3748;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .cta-section p {
+        margin-bottom: 1.5rem;
+        color: #7a7a7a;
+        font-size: 1rem;
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: #ff6b35;
+        color: white;
+        text-decoration: none;
+        padding: 0.9rem 1.8rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.2s;
+        margin: 0.5rem;
+      }
+
+      .cta-button:hover {
+        background: #e55a2b;
+        transform: translateY(-1px);
+      }
+
+      .cta-button.secondary {
+        background: transparent;
+        color: #ff6b35;
+        border: 2px solid #ff6b35;
+      }
+
+      .cta-button.secondary:hover {
+        background: #ff6b35;
+        color: white;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 3rem;
+        padding: 2rem;
+        color: #7a7a7a;
+      }
+
+      .footer p {
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      .footer a {
+        color: #ff6b35;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+
+        .routes-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .github-section {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .container {
+          padding: 1rem;
+        }
+
+        .logo {
+          font-size: 2rem;
+        }
+
+        header {
+          padding: 2rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1 class="logo">SmartMate RAG Service</h1>
+        <p class="subtitle">
+          Production-Ready Retrieval-Augmented Generation Microservice
+        </p>
+        <p class="description">
+          A standalone, developer-friendly RAG microservice built with FastAPI.
+          Easily integrate document processing and semantic search into any
+          application.
+        </p>
+        <div class="github-section">
+          <a
+            href="https://github.com/m-aishah/smartmate-rag-service"
+            class="github-link"
+            target="_blank"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+              />
+            </svg>
+            View on GitHub
+          </a>
+          <span class="star-text">⭐ Give us a star!</span>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <div class="card">
+          <h2>🚀 Quick Integration</h2>
+          <ul class="feature-list">
+            <li>Drop-in microservice architecture</li>
+            <li>RESTful API with OpenAPI docs</li>
+            <li>Docker-ready deployment</li>
+            <li>Comprehensive error handling</li>
+            <li>Built-in health monitoring</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>🔧 Developer Features</h2>
+          <ul class="feature-list">
+            <li>FastAPI with async/await support</li>
+            <li>Supabase + pgvector integration</li>
+            <li>OpenAI embeddings out of the box</li>
+            <li>User isolation & security</li>
+            <li>Batch processing capabilities</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="api-routes">
+        <h2>📡 Main API Routes</h2>
+        <div class="routes-grid">
+          <div class="route-category">
+            <h3>Document Management</h3>
+            <div class="route">
+              <span class="method post">POST</span>/documents/process
+            </div>
+            <div class="route">
+              <span class="method get">GET</span>/documents/status/{id}
+            </div>
+            <div class="route">
+              <span class="method get">GET</span>/documents/list
+            </div>
+            <div class="route">
+              <span class="method delete">DELETE</span>/documents/{id}
+            </div>
+          </div>
+
+          <div class="route-category">
+            <h3>Search & Query</h3>
+            <div class="route">
+              <span class="method post">POST</span>/query/search
+            </div>
+            <div class="route">
+              <span class="method get">GET</span>/query/similar/{chunk_id}
+            </div>
+            <div class="route">
+              <span class="method post">POST</span>/query/batch-search
+            </div>
+            <div class="route">
+              <span class="method get">GET</span>/query/stats
+            </div>
+          </div>
+
+          <div class="route-category">
+            <h3>System</h3>
+            <div class="route"><span class="method get">GET</span>/health</div>
+            <div class="route"><span class="method get">GET</span>/metrics</div>
+            <div class="route"><span class="method get">GET</span>/docs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-section">
+        <h2>Ready to Get Started?</h2>
+        <p>
+          Explore the interactive API documentation and start building with our
+          RAG service.
+        </p>
+        <a href="/docs" class="cta-button">Try the API</a>
+        <a href="/redoc" class="cta-button secondary">View Endpoints</a>
+      </div>
+
+      <div class="footer">
+        <p><strong>SmartMate RAG Service</strong></p>
+        <p>
+          Built with ❤️ by
+          <a href="https://github.com/m-aishah" target="_blank"
+            ><strong>m-aishah</strong></a
+          >
+        </p>
+        <p>
+          Part of the SmartMate graduation project • Designed for developers
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
