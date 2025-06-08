@@ -109,8 +109,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Machine Learning Models (if caching models locally)
-models/
 *.bin
 *.pt
 *.onnx
