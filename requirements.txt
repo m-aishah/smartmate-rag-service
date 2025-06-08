@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-multipart
+httpx
+supabase
+psycopg2-binary
+pgvector
+sentence-transformers
+PyPDF2
+python-docx
+python-dotenv
+numpy
+torch
+transformers
+scikit-learn
