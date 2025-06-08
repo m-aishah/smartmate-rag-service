@@ -363,31 +363,7 @@ All endpoints return structured error responses:
 
 ## Environment Variables
 
-Create a `.env` file with the following variables:
-
-```bash
-# Supabase Configuration
-SUPABASE_URL=your_supabase_url
-SUPABASE_SERVICE_KEY=your_service_key
-DATABASE_URL=postgresql://user:pass@host:port/db
-
-# OpenAI Configuration (if using OpenAI embeddings)
-OPENAI_API_KEY=your_openai_key
-
-# Service Configuration
-LOG_LEVEL=INFO
-MAX_FILE_SIZE_MB=50
-CHUNK_SIZE=1000
-CHUNK_OVERLAP=200
-MAX_CONCURRENT_PROCESSING=5
-
-# Redis Configuration (for caching)
-REDIS_URL=redis://localhost:6379
-
-# Security
-API_KEY_HEADER=X-API-Key
-ALLOWED_ORIGINS=http://localhost:3000,https://yourdomain.com
-```
+Create a `.env` file with the variable specified in `.env.example`
 
 ## Database Schema
 
