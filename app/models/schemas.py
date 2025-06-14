@@ -3,6 +3,14 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 # Request Models
+
+class TextProcessorRequest(BaseModel):
+    text: str
+    document_id: str
+    user_id: str
+    title: str
+    text_type: str = "summary"  # summary, lecture, notes, etc.
+    metadata: Optional[Dict[str, Any]] = {}
 class DocumentProcessRequest(BaseModel):
     file_url: HttpUrl
     document_id: str

@@ -16,7 +16,7 @@ A production-ready, reusable Retrieval-Augmented Generation (RAG) microservice b
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/m-aishah/smartmate-rag-service
 cd rag-service
 
 # Copy environment file
